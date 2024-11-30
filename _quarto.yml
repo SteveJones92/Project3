@@ -7,3 +7,4 @@ website:
     left:
       - pages/EDA.qmd
       - pages/Modeling.qmd
+    index: pages/EDA.qmd
