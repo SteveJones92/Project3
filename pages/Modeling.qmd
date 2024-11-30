@@ -1,0 +1,17 @@
+---
+title: "Models"
+format: html
+editor: source
+---
+
+<hr style="border: 3px solid black;" />
+
+## Building 2 Models predicting 'Diabetes_binary' using 'log-loss' as evaluation metric
+
+### Model 1: Classification Tree
+
+### Model 2: Random Forest
+
+<hr style="border: 4px solid black;" />
+
+[EDA Page](EDA.html)

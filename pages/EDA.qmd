@@ -1,0 +1,13 @@
+---
+title: "EDA"
+format: html
+editor: source
+---
+
+<hr style="border: 3px solid black;" />
+
+## Exploratory Data Analysis
+
+<hr style="border: 4px solid black;" />
+
+[Modeling Page](Modeling.html)
