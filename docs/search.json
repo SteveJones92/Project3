@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "pages/EDA.html#exploratory-data-analysis",
+    "href": "pages/EDA.html#exploratory-data-analysis",
+    "title": "EDA",
+    "section": "Exploratory Data Analysis",
+    "text": "Exploratory Data Analysis\n\nModeling Page"
+  },
+  {
+    "objectID": "pages/Modeling.html#building-2-models-predicting-diabetes_binary-using-log-loss-as-evaluation-metric",
+    "href": "pages/Modeling.html#building-2-models-predicting-diabetes_binary-using-log-loss-as-evaluation-metric",
+    "title": "Models",
+    "section": "Building 2 Models predicting ‘Diabetes_binary’ using ‘log-loss’ as evaluation metric",
+    "text": "Building 2 Models predicting ‘Diabetes_binary’ using ‘log-loss’ as evaluation metric\n\nModel 1: Classification Tree\n\n\nModel 2: Random Forest\n\nEDA Page"
+  }
+]
