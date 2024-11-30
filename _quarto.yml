@@ -5,6 +5,7 @@ project:
 website:
   navbar:
     left:
-      - pages/EDA.qmd
-      - pages/Modeling.qmd
-    index: pages/EDA.qmd
+      - text: "EDA"
+        href: pages/EDA.qmd
+      - text: "Modeling"
+        href: pages/Modeling.qmd
