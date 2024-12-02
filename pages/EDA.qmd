@@ -8,6 +8,10 @@ editor: source
 
 ## Exploratory Data Analysis
 
+### Check missing values
+
+### Diabetes proportion
+
 <hr style="border: 4px solid black;" />
 
 [Modeling Page](Modeling.html)

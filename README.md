@@ -30,3 +30,11 @@ docker run (container)
 ### Kill container
 docker kill (container)
 > docker kill api
+
+### Save the image as a tar
+docker save (image) -o (output file)
+> docker save api -o api_image.tar
+
+### Load the image from a tar
+docker load -i (input file)
+> docker load -i api_image.tar
