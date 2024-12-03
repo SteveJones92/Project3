@@ -1,7 +1,6 @@
 library(dplyr)
 library(ggplot2)
-library(tidymodels)
-library(parsnip)
+
 
 # load data
 data <- read.csv("data/diabetes_binary_health_indicators_BRFSS2015.csv")
@@ -26,12 +25,13 @@ data <- read.csv("data/diabetes_binary_health_indicators_BRFSS2015.csv")
 # PhysHlth - days thinking about in last 30 days - 0-30
 # DiffWalk - walking or stairs difficulty - 0 = no, 1 = yes
 # Sex - 0 = female, 1 = male
-# Age - grouped by 5 years - 0-13 - first is 18-24 and last is 80+
+# Age - grouped by 5 years - 1-13 - first is 18-24 and last is 80+
 # Education = 1-6, from never attended to college graduate
 # Income - 1-8, from less than $10,000 to $75,000+
 
 # no NAs
 sum(is.na(data))
+table(data$Age)
 
 n <- nrow(data) # 253680 items
 table(data$Diabetes_binary) / n # 14% have diabetes, would get 86% simply by guessing no on all
@@ -66,7 +66,7 @@ helper("NoDocbcCost")
 helper("DiffWalk")
 helper("Sex")
 
-table(f=data$Fruits, bp=data$HighBP, d=data$Diabetes_binary)
+table(f=data$Fruits, dw=data$DiffWalk, d=data$Diabetes_binary)
 
 # leftover BMI, GenHlth, MentHlth, PhysHlth, Age, Education, Income
 cor(data$MentHlth, data$Diabetes_binary)
@@ -106,7 +106,7 @@ table(data_fixed$Diabetes_binary, data_fixed$count_common)
 table(data_fixed$Diabetes_binary, data_fixed$count_rare)
 
 str(data_fixed)
-data_fixed <- data_fixed |>
+data_fixed_m <- data_fixed |>
   mutate(
     HighBP = factor(HighBP, levels = c(0, 1), labels = c("No", "Yes")),
     HighChol = factor(HighChol, levels = c(0, 1), labels = c("No", "Yes")),
@@ -117,56 +117,9 @@ data_fixed <- data_fixed |>
     PhysActivity = factor(PhysActivity, levels = c(0, 1), labels = c("No", "Yes")),
     HvyAlcoholConsump = factor(HvyAlcoholConsump, levels = c(0, 1), labels = c("No", "Yes")),
     DiffWalk = factor(DiffWalk, levels = c(0, 1), labels = c("No", "Yes")),
+    GenHlth = factor(GenHlth, levels = c(1, 2, 3, 4, 5), labels = c("Excellent", "Very Good", "Good", "Fair", "Poor")),
+    Age = factor(Age, levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), labels = c("18-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80+")),
     Diabetes_binary = factor(Diabetes_binary, levels = c(0, 1), labels = c("No", "Yes"))
   )
-str(data_fixed)
+str(data_fixed_m)
 
-set.seed(11)
-data_split <- initial_split(data_fixed, prop = 0.75, strata = Diabetes_binary)
-data_train <- training(data_split)
-data_test <- testing(data_split)
-data_10_fold <- vfold_cv(data_train, v = 10, strata = Diabetes_binary)
-
-REG_TREE_spec <- decision_tree(tree_depth = tune(), min_n = 5, cost_complexity = tune()) |>
-  set_engine("rpart") |>
-  set_mode ("classification")
-
-model_recipe <- recipe(Diabetes_binary ~ BMI + Age + GenHlth + count_common + count_rare, data = data_train) |>
-  #step_rm(HighBP, HighChol, CholCheck, Smoker, Stroke, HeartDiseaseorAttack, PhysActivity, HvyAlcoholConsump, DiffWalk) |>
-  step_normalize(all_numeric())
-
-model_recipe |> prep() |> bake(new_data = data_train)
-
-REG_TREE_wkf <- workflow() |>
-  add_recipe(model_recipe) |>
-  add_model(REG_TREE_spec)
-
-REG_TREE_grid <- REG_TREE_wkf |>
-  tune_grid(resamples=data_10_fold, grid=grid_regular(cost_complexity(range(-5, -1)), tree_depth(range(3L, 8L)), levels=c(4, 3)))
-
-REG_TREE_grid |>
-  collect_metrics() |>
-  filter(.metric == "accuracy") |>
-  ggplot(aes(x=tree_depth, y=mean, color=.metric)) +
-  geom_line()
-
-REG_TREE_grid |>
-  collect_metrics() |>
-  filter(.metric == "accuracy") |>
-  ggplot(aes(x=cost_complexity, y=mean, color=.metric)) +
-  geom_line()
-
-best_accuracy <- REG_TREE_grid |>
-    select_best(metric = "accuracy")
-best_accuracy
-
-REG_TREE_final_fit <- REG_TREE_wkf |>
-    finalize_workflow(best_accuracy) |>
-    last_fit(data_split, metrics = metric_set(accuracy, mn_log_loss))
-
-tree_final_model <- extract_workflow(REG_TREE_final_fit)
-tree_final_model |>
-  extract_fit_engine() |>
-  rpart.plot::rpart.plot(roundint = FALSE)
-REG_TREE_final_fit |>
-  collect_metrics()

@@ -423,11 +423,59 @@ db       0      1      2      3      4
   1    174  25047   8363   1738     24</code></pre>
 </div>
 </div>
-<hr style="border: 4px solid black;">
-<p><a href="Modeling.html">Modeling Page</a></p>
-
-
+<blockquote class="blockquote">
+<p>Showing the diabetes counts across the tallies of these common and rare items, we can see the ratios get smaller as more items are tacked on. It is typical practice in healthcare to have patients that present with higher number of red-flag factors to be more susceptible to other worse outcomes.</p>
+</blockquote>
 </section>
+<section id="converting-column-structures-to-factors-and-numbers." class="level3">
+<h3 class="anchored" data-anchor-id="converting-column-structures-to-factors-and-numbers.">Converting column structures to factors and numbers.</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>data_fixed_m <span class="ot">&lt;-</span> data_fixed <span class="sc">|&gt;</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">HighBP =</span> <span class="fu">factor</span>(HighBP, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Yes"</span>)),</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">HighChol =</span> <span class="fu">factor</span>(HighChol, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Yes"</span>)),</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">CholCheck =</span> <span class="fu">factor</span>(CholCheck, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Yes"</span>)),</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Smoker =</span> <span class="fu">factor</span>(Smoker, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Yes"</span>)),</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Stroke =</span> <span class="fu">factor</span>(Stroke, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Yes"</span>)),</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">HeartDiseaseorAttack =</span> <span class="fu">factor</span>(HeartDiseaseorAttack, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Yes"</span>)),</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">PhysActivity =</span> <span class="fu">factor</span>(PhysActivity, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Yes"</span>)),</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">HvyAlcoholConsump =</span> <span class="fu">factor</span>(HvyAlcoholConsump, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Yes"</span>)),</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">DiffWalk =</span> <span class="fu">factor</span>(DiffWalk, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Yes"</span>)),</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">GenHlth =</span> <span class="fu">factor</span>(GenHlth, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Excellent"</span>, <span class="st">"Very Good"</span>, <span class="st">"Good"</span>, <span class="st">"Fair"</span>, <span class="st">"Poor"</span>)),</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Age =</span> <span class="fu">factor</span>(Age, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">13</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"18-24"</span>, <span class="st">"25-29"</span>, <span class="st">"30-34"</span>, <span class="st">"35-39"</span>, <span class="st">"40-44"</span>, <span class="st">"45-49"</span>, <span class="st">"50-54"</span>, <span class="st">"55-59"</span>, <span class="st">"60-64"</span>, <span class="st">"65-69"</span>, <span class="st">"70-74"</span>, <span class="st">"75-79"</span>, <span class="st">"80+"</span>)),</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Diabetes_binary =</span> <span class="fu">factor</span>(Diabetes_binary, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Yes"</span>))</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data_fixed_m)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   253680 obs. of  16 variables:
+ $ Diabetes_binary     : Factor w/ 2 levels "No","Yes": 1 1 1 1 1 1 1 1 2 1 ...
+ $ HighBP              : Factor w/ 2 levels "No","Yes": 2 1 2 2 2 2 2 2 2 1 ...
+ $ HighChol            : Factor w/ 2 levels "No","Yes": 2 1 2 1 2 2 1 2 2 1 ...
+ $ CholCheck           : Factor w/ 2 levels "No","Yes": 2 1 2 2 2 2 2 2 2 2 ...
+ $ BMI                 : num  40 25 28 27 24 25 30 25 30 24 ...
+ $ Smoker              : Factor w/ 2 levels "No","Yes": 2 2 1 1 1 2 2 2 2 1 ...
+ $ Stroke              : Factor w/ 2 levels "No","Yes": 1 1 1 1 1 1 1 1 1 1 ...
+ $ HeartDiseaseorAttack: Factor w/ 2 levels "No","Yes": 1 1 1 1 1 1 1 1 2 1 ...
+ $ PhysActivity        : Factor w/ 2 levels "No","Yes": 1 2 1 2 2 2 1 2 1 1 ...
+ $ HvyAlcoholConsump   : Factor w/ 2 levels "No","Yes": 1 1 1 1 1 1 1 1 1 1 ...
+ $ GenHlth             : Factor w/ 5 levels "Excellent","Very Good",..: 5 3 5 2 2 2 3 3 5 2 ...
+ $ DiffWalk            : Factor w/ 2 levels "No","Yes": 2 1 2 1 1 1 1 2 2 1 ...
+ $ Sex                 : num  0 0 0 0 0 1 0 0 0 1 ...
+ $ Age                 : Factor w/ 13 levels "18-24","25-29",..: 9 7 9 11 11 10 9 11 9 8 ...
+ $ count_common        : num  4 2 3 2 3 4 2 5 4 0 ...
+ $ count_rare          : num  1 0 1 1 1 1 1 1 2 1 ...</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>Almost all of the data are factors. Only BMI and the counts created are non-factors. Convert all to appropriate labels. Our data should be ready for sending to models for usage.</p>
+</blockquote>
+<hr style="border: 4px solid black;">
+</section>
+</section>
+<section id="to-modeling" class="level2">
+<h2 class="anchored" data-anchor-id="to-modeling"><a href="Modeling.html">To Modeling</a></h2>
+
+
 </section>
 
 </main> <!-- /main -->

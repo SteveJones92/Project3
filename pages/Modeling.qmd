@@ -7,10 +7,50 @@ editor: source
 <hr style="border: 3px solid black;" />
 
 ## Building 2 Models predicting 'Diabetes_binary' using 'log-loss' as evaluation metric
+```{r}
+#| output: false
+library(tidymodels)
+library(parsnip)
+```
+
+### Data split
+```{r}
+# set.seed(11)
+# data_split <- initial_split(data_fixed_m, prop = 0.10, strata = Diabetes_binary)
+# data_train <- training(data_split)
+# data_test <- testing(data_split)
+# data_5_fold <- vfold_cv(data_train, v=5, strata = Diabetes_binary)
+```
+
+### Model recipe
+```{r}
+# model_recipe <- recipe(Diabetes_binary ~ BMI + Age + GenHlth + count_common + count_rare, data = data_train) |>
+#   step_mutate(
+#     GenHlth = factor(GenHlth, ordered = TRUE),
+#     Age = factor(Age, ordered = TRUE)
+#   )
+#
+# model_recipe |> prep() |> bake(new_data = data_train)
+```
+
 
 ### Model 1: Classification Tree
+```{r}
+# class_tree_spec <- decision_tree(tree_depth = tune(), min_n = 5, cost_complexity = tune()) |>
+#   set_engine("rpart") |>
+#   set_mode ("classification")
+```
+
 
 ### Model 2: Random Forest
+```{r}
+# RF_spec <- rand_forest(
+#   mtry = tune(),
+#   trees = tune()) |>  # default is 500
+#   set_engine("ranger", importance="impurity") |>
+#   set_mode("classification")
+```
+
 
 <hr style="border: 4px solid black;" />
 
