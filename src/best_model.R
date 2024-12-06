@@ -80,6 +80,65 @@ function(HighBP=0, HighChol=0, PhysActivity=1, DiffWalk=0, Smoker=0, CholCheck=1
   predicts$.pred_class
 }
 
+# 3 example calls
+library(httr)
+
+# default
+response <- GET("http://127.0.0.1:8000/pred",
+                query = list(
+                  HighBP = 0,
+                  HighChol = 0,
+                  PhysActivity = 1,
+                  DiffWalk = 0,
+                  Smoker = 0,
+                  CholCheck = 1,
+                  Stroke = 0,
+                  HeartDiseaseorAttack = 0,
+                  HvyAlcoholConsump = 0,
+                  GenHlth = 2,
+                  Age = 9,
+                  BMI = 28
+                ))
+
+content(response)
+
+# mostly having issues, also gets yes prediction
+response <- GET("http://127.0.0.1:8000/pred",
+                query = list(
+                  HighBP = 1,
+                  HighChol = 1,
+                  PhysActivity = 0,
+                  DiffWalk = 1,
+                  Smoker = 1,
+                  CholCheck = 1,
+                  Stroke = 1,
+                  HeartDiseaseorAttack = 1,
+                  HvyAlcoholConsump = 1,
+                  GenHlth = 5,
+                  Age = 11,
+                  BMI = 40
+                ))
+
+content(response)
+
+# random other call
+response <- GET("http://127.0.0.1:8000/pred",
+                query = list(
+                  HighBP = 1,
+                  HighChol = 0,
+                  PhysActivity = 1,
+                  DiffWalk = 1,
+                  Smoker = 0,
+                  CholCheck = 1,
+                  Stroke = 1,
+                  HeartDiseaseorAttack = 0,
+                  HvyAlcoholConsump = 0,
+                  GenHlth = 1,
+                  Age = 5,
+                  BMI = 20
+                ))
+
+content(response)
 
 #* Get info of author name and repository html
 #* @get /info
