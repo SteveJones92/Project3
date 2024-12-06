@@ -1,10 +1,11 @@
 source("../src/eda.R")
 library(tidymodels)
+library(ranger)
 
 set.seed(107)
 
 mtry <- 2
-trees <- 3000
+trees <- 100
 min_n <- 40
 
 model_recipe_best <- recipe(Diabetes_binary ~ BMI + Age + GenHlth + count_common + count_rare, data = data_fixed_m) |>
@@ -71,8 +72,8 @@ function(HighBP=0, HighChol=0, PhysActivity=1, DiffWalk=0, Smoker=0, CholCheck=1
     Stroke = as.factor(Stroke),
     HeartDiseaseorAttack = as.factor(HeartDiseaseorAttack),
     HvyAlcoholConsump = as.factor(HvyAlcoholConsump),
-    GenHlth = as.factor(GenHlth),
-    Age = as.factor(Age),
+    GenHlth = factor(GenHlth, levels = c(1, 2, 3, 4, 5), labels = c("Excellent", "Very Good", "Good", "Fair", "Poor")),
+    Age = factor(Age, levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), labels = c("18-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80+")),
     BMI = as.numeric(BMI)
   )
   predicts <- predict(RF_best_fit, new_data = new_data)
@@ -80,14 +81,14 @@ function(HighBP=0, HighChol=0, PhysActivity=1, DiffWalk=0, Smoker=0, CholCheck=1
 }
 
 
-#* Info
+#* Get info of author name and repository html
 #* @get /info
 function(){
   c("Steven Jones", "https://stevejones92.github.io/Project3/pages/EDA.html")
 }
 
 
-#* Confusion
+#* Get confusion matrix of best model prediction results
 #* @serializer png
 #* @get /confusion
 function(){
