@@ -7,6 +7,28 @@ editor: source
 <hr style="border: 3px solid black;" />
 
 ## Exploratory Data Analysis
+
+### Introduction
+The dataset we will be using [Data Link](https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset/) comes from another dataset with over 300 features [Base Data Link](https://www.kaggle.com/datasets/cdc/behavioral-risk-factor-surveillance-system). It has been cleaned into a much smaller set of predictors (mostly binary) for use in building a model to predict diabetes or no diabetes.
+
+A quick search of diabetes influencing factors shows Weight, Inactivity, Family history, Age, Race and ethnicity, Prediabetes, Gestational diabetes, Blood pressure, Cholesterol. Of which, we have access to columns that contain:
+
+- High Blood Pressure
+- High Cholesterol
+- Difficulty walking (similar to inactivity)
+- Age
+
+And many other fields (not exhaustive):
+
+- Smoker (5+ packs in lifetime)
+- General Health Rating (1-5, lowest being best)
+- Stroke (Ever had)
+- Fruits (1+ a day)
+
+We will first explore the data and then process the data into what is needed for building a classification tree and random forest model.
+
+<hr style="border: 2px solid black;" />
+
 ```{r}
 #| output: false
 library(dplyr)
@@ -22,7 +44,7 @@ data <- read.csv("../data/diabetes_binary_health_indicators_BRFSS2015.csv")
 ```{r}
 sum(is.na(data))
 ```
-> There are no missing values in the data.
+> There are no missing values in the data, which makes sense because the dataset has already been processed.
 
 ### Diabetes proportion
 ```{r}
@@ -31,7 +53,7 @@ n <- nrow(data) # 253680 items
 n
 table(data$Diabetes_binary) / n
 ```
-> There are 25368 rows in the data. Out of this, it is seen that 14% of the data are diabetes=true and 86% do not have diabetes. This means that if the guess is just to put no diabetes for everything, the accuracy would be 86%, and any model should do better than this.
+> There are 253680 rows in the data. Out of this, it is seen that 14% of the data are diabetes=true and 86% do not have diabetes. This means that if the guess is just to put no diabetes for everything, the accuracy would be 86%, and any model should do better than this.
 
 ### Exploring Yes/No Categories (14 out of 21)
 ```{r}
@@ -49,7 +71,7 @@ helper <- function(category) {
   print(explained)
 }
 ```
-
+> As seen in further use, this will give a good view of each field and how much influence it may have on the response.
 
 #### Frequent Items
 ```{r}

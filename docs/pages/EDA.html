@@ -161,6 +161,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <hr style="border: 3px solid black;">
 <section id="exploratory-data-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="exploratory-data-analysis">Exploratory Data Analysis</h2>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
+<p>The dataset we will be using <a href="https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset/">Data Link</a> comes from another dataset with over 300 features <a href="https://www.kaggle.com/datasets/cdc/behavioral-risk-factor-surveillance-system">Base Data Link</a>. It has been cleaned into a much smaller set of predictors (mostly binary) for use in building a model to predict diabetes or no diabetes.</p>
+<p>A quick search of diabetes influencing factors shows Weight, Inactivity, Family history, Age, Race and ethnicity, Prediabetes, Gestational diabetes, Blood pressure, Cholesterol. Of which, we have access to columns that contain:</p>
+<ul>
+<li>High Blood Pressure</li>
+<li>High Cholesterol</li>
+<li>Difficulty walking (similar to inactivity)</li>
+<li>Age</li>
+</ul>
+<p>And many other fields (not exhaustive):</p>
+<ul>
+<li>Smoker (5+ packs in lifetime)</li>
+<li>General Health Rating (1-5, lowest being best)</li>
+<li>Stroke (Ever had)</li>
+<li>Fruits (1+ a day)</li>
+</ul>
+<p>We will first explore the data and then process the data into what is needed for building a classification tree and random forest model.</p>
+<hr style="border: 2px solid black;">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -169,6 +188,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/diabetes_binary_health_indicators_BRFSS2015.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
 <section id="check-missing-values" class="level3">
 <h3 class="anchored" data-anchor-id="check-missing-values">Check missing values</h3>
 <div class="cell">
@@ -178,7 +198,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <blockquote class="blockquote">
-<p>There are no missing values in the data.</p>
+<p>There are no missing values in the data, which makes sense because the dataset has already been processed.</p>
 </blockquote>
 </section>
 <section id="diabetes-proportion" class="level3">
@@ -195,7 +215,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <blockquote class="blockquote">
-<p>There are 25368 rows in the data. Out of this, it is seen that 14% of the data are diabetes=true and 86% do not have diabetes. This means that if the guess is just to put no diabetes for everything, the accuracy would be 86%, and any model should do better than this.</p>
+<p>There are 253680 rows in the data. Out of this, it is seen that 14% of the data are diabetes=true and 86% do not have diabetes. This means that if the guess is just to put no diabetes for everything, the accuracy would be 86%, and any model should do better than this.</p>
 </blockquote>
 </section>
 <section id="exploring-yesno-categories-14-out-of-21" class="level3">
@@ -215,6 +235,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(explained)</span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<blockquote class="blockquote">
+<p>As seen in further use, this will give a good view of each field and how much influence it may have on the response.</p>
+</blockquote>
 <section id="frequent-items" class="level4">
 <h4 class="anchored" data-anchor-id="frequent-items">Frequent Items</h4>
 <div class="cell">

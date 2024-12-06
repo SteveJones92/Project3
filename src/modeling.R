@@ -1,8 +1,8 @@
 library(tidymodels)
 library(parsnip)
 
-set.seed(11)
-data_split <- initial_split(data_fixed_m, prop = 0.10, strata = Diabetes_binary)
+set.seed(107)
+data_split <- initial_split(data_fixed_m, prop = 0.1, strata = Diabetes_binary)
 data_train <- training(data_split)
 data_test <- testing(data_split)
 data_5_fold <- vfold_cv(data_train, v=5, strata = Diabetes_binary)
@@ -15,7 +15,7 @@ model_recipe <- recipe(Diabetes_binary ~ BMI + Age + GenHlth + count_common + co
 
 model_recipe |> prep() |> bake(new_data = data_train)
 
-class_tree_spec <- decision_tree(tree_depth = tune(), min_n = 5, cost_complexity = tune()) |>
+class_tree_spec <- decision_tree(tree_depth = tune(), min_n = tune(), cost_complexity = tune()) |>
   set_engine("rpart") |>
   set_mode ("classification")
 
@@ -27,10 +27,12 @@ class_tree_grid <- class_tree_wkf |>
   tune_grid(
     resamples=data_5_fold,
     grid=grid_regular(
-      cost_complexity(range(-4, -1)),
-      tree_depth(range(5L, 15L)),
-      levels=c(5, 5)),
-    metrics = metric_set(mn_log_loss, accuracy)
+        tree_depth(range(6L, 20L)),
+        cost_complexity(range(-10, -1)),
+        min_n(range(2L, 40L)),
+      levels=c(5, 10, 3)),
+    metrics = metric_set(mn_log_loss, accuracy),
+    control = control_grid(verbose = TRUE)
   )
 class_tree_grid |>
   collect_metrics() |>
@@ -67,8 +69,9 @@ class_tree_final_fit |>
 # -----------------------
 # Random Forest
 RF_spec <- rand_forest(
-  mtry = tune(),
-  trees = tune()) |>  # default is 500
+  mtry = tune(),  # default is 1
+  trees = tune(),  # default is 500
+  min_n = tune()) |>  # default is 2
   set_engine("ranger", importance="impurity") |>
   set_mode("classification")
 
@@ -80,9 +83,10 @@ RF_grid <- RF_wkf |>
   tune_grid(
     resamples = data_5_fold,
     grid = grid_regular(
-      mtry(range(1L, 4L)),
-      trees(range(100L, 2000L)),
-      levels=c(4, 5)
+      mtry(range(1L, 2L)),
+      trees(range(1000L, 3000L)),
+      min_n(range(2L, 40L)),
+      levels=c(2, 3, 4)
     ),
     metrics = metric_set(mn_log_loss, accuracy),
     control = control_grid(verbose = TRUE)
@@ -92,12 +96,14 @@ RF_grid |>
   collect_metrics() |>
   filter(.metric == "mn_log_loss") |>
   ggplot(aes(x=mtry, y=mean, color=as.factor(trees))) +
+  facet_wrap(~min_n) +
   geom_line()
 
 RF_grid |>
   collect_metrics() |>
   filter(.metric == "mn_log_loss") |>
   ggplot(aes(x=trees, y=mean, color=as.factor(mtry))) +
+  facet_wrap(~min_n) +
   geom_line()
 
 best_log_loss <- RF_grid |>

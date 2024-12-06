@@ -3,7 +3,7 @@ library(ggplot2)
 
 
 # load data
-data <- read.csv("data/diabetes_binary_health_indicators_BRFSS2015.csv")
+data <- read.csv("../data/diabetes_binary_health_indicators_BRFSS2015.csv")
 
 # data summaries from looking at the kaggle descriptions
 # Diabetes_binary - thing to predict - 0 = no diabetes, 1 = prediabetes or diabetes
@@ -30,68 +30,68 @@ data <- read.csv("data/diabetes_binary_health_indicators_BRFSS2015.csv")
 # Income - 1-8, from less than $10,000 to $75,000+
 
 # no NAs
-sum(is.na(data))
-table(data$Age)
+# sum(is.na(data))
+# table(data$Age)
 
-n <- nrow(data) # 253680 items
-table(data$Diabetes_binary) / n # 14% have diabetes, would get 86% simply by guessing no on all
+# n <- nrow(data) # 253680 items
+# table(data$Diabetes_binary) / n # 14% have diabetes, would get 86% simply by guessing no on all
 
 
-helper <- function(category) {
-  # finds the proportions of the category for yes/no categories
-  # finds the proportion of each combination
-  # finds the percentages of diabetes based on the category
-  prop <- table(data[[category]]) / n
-  ct <- table(ifelse(data$Diabetes_binary == 1, "Diabetes", "NoDiabetes" ),
-              ifelse(data[[category]] == 1, category, paste0("No", category))) / n
-  explained <- t(t(ct) / ( ct[1,] + ct[2,]))
-  max(explained[,1]) * prop[2] + max(explained[,2]) * prop[1]
-  print(prop)
-  print(ct)
-  print(explained)
-}
+# helper <- function(category) {
+#   # finds the proportions of the category for yes/no categories
+#   # finds the proportion of each combination
+#   # finds the percentages of diabetes based on the category
+#   prop <- table(data[[category]]) / n
+#   ct <- table(ifelse(data$Diabetes_binary == 1, "Diabetes", "NoDiabetes" ),
+#               ifelse(data[[category]] == 1, category, paste0("No", category))) / n
+#   explained <- t(t(ct) / ( ct[1,] + ct[2,]))
+#   max(explained[,1]) * prop[2] + max(explained[,2]) * prop[1]
+#   print(prop)
+#   print(ct)
+#   print(explained)
+# }
 
-helper("HighBP")
-helper("HighChol")
-helper("CholCheck")
-helper("Smoker")
-helper("Stroke")
-helper("HeartDiseaseorAttack")
-helper("PhysActivity")
-helper("Fruits")
-helper("Veggies")
-helper("HvyAlcoholConsump")
-helper("AnyHealthcare")
-helper("NoDocbcCost")
-helper("DiffWalk")
-helper("Sex")
-
-table(f=data$Fruits, dw=data$DiffWalk, d=data$Diabetes_binary)
+# helper("HighBP")
+# helper("HighChol")
+# helper("CholCheck")
+# helper("Smoker")
+# helper("Stroke")
+# helper("HeartDiseaseorAttack")
+# helper("PhysActivity")
+# helper("Fruits")
+# helper("Veggies")
+# helper("HvyAlcoholConsump")
+# helper("AnyHealthcare")
+# helper("NoDocbcCost")
+# helper("DiffWalk")
+# helper("Sex")
+#
+# table(f=data$Fruits, dw=data$DiffWalk, d=data$Diabetes_binary)
 
 # leftover BMI, GenHlth, MentHlth, PhysHlth, Age, Education, Income
-cor(data$MentHlth, data$Diabetes_binary)
-cor(data$PhysHlth, data$Diabetes_binary)
-cor(data$GenHlth, data$Diabetes_binary)
-cor(data$BMI, data$Diabetes_binary)
-cor(data$Age, data$Diabetes_binary)
-cor(data$Education, data$Diabetes_binary)
-cor(data$Income, data$Diabetes_binary)
+# cor(data$MentHlth, data$Diabetes_binary)
+# cor(data$PhysHlth, data$Diabetes_binary)
+# cor(data$GenHlth, data$Diabetes_binary)
+# cor(data$BMI, data$Diabetes_binary)
+# cor(data$Age, data$Diabetes_binary)
+# cor(data$Education, data$Diabetes_binary)
+# cor(data$Income, data$Diabetes_binary)
 
-ggplot(data, aes(x = Age, fill = factor(Diabetes_binary))) +
-  geom_bar(position = "fill")
-ggplot(data, aes(x = Income, fill = factor(Diabetes_binary))) +
-  geom_bar(position = "fill")
-ggplot(data, aes(x = Education, fill = factor(Diabetes_binary))) +
-  geom_bar(position = "fill")
-ggplot(data, aes(x = GenHlth, fill = factor(Diabetes_binary))) +
-  geom_bar(position = "fill")
-ggplot(data, aes(x = MentHlth, fill = factor(Diabetes_binary))) +
-  geom_bar(position = "fill")
-ggplot(data, aes(x = PhysHlth, fill = factor(Diabetes_binary))) +
-  geom_bar(position = "fill")
-ggplot(data, aes(x = BMI, fill = factor(Diabetes_binary))) +
-    geom_histogram(position = "fill")
-hist(data$BMI, breaks = 20)
+# ggplot(data, aes(x = Age, fill = factor(Diabetes_binary))) +
+#   geom_bar(position = "fill")
+# ggplot(data, aes(x = Income, fill = factor(Diabetes_binary))) +
+#   geom_bar(position = "fill")
+# ggplot(data, aes(x = Education, fill = factor(Diabetes_binary))) +
+#   geom_bar(position = "fill")
+# ggplot(data, aes(x = GenHlth, fill = factor(Diabetes_binary))) +
+#   geom_bar(position = "fill")
+# ggplot(data, aes(x = MentHlth, fill = factor(Diabetes_binary))) +
+#   geom_bar(position = "fill")
+# ggplot(data, aes(x = PhysHlth, fill = factor(Diabetes_binary))) +
+#   geom_bar(position = "fill")
+# ggplot(data, aes(x = BMI, fill = factor(Diabetes_binary))) +
+#     geom_histogram(position = "fill")
+# hist(data$BMI, breaks = 20)
 
 # summing across the common items that have an effect
 # summing across the rare items that have an effect
@@ -102,10 +102,10 @@ data_fixed <- data |>
   ) |>
   select(-c(Fruits, Veggies, AnyHealthcare, NoDocbcCost, Income, Education, PhysHlth, MentHlth, Sex))
 
-table(data_fixed$Diabetes_binary, data_fixed$count_common)
-table(data_fixed$Diabetes_binary, data_fixed$count_rare)
+# table(data_fixed$Diabetes_binary, data_fixed$count_common)
+# table(data_fixed$Diabetes_binary, data_fixed$count_rare)
 
-str(data_fixed)
+# str(data_fixed)
 data_fixed_m <- data_fixed |>
   mutate(
     HighBP = factor(HighBP, levels = c(0, 1), labels = c("No", "Yes")),
@@ -121,5 +121,5 @@ data_fixed_m <- data_fixed |>
     Age = factor(Age, levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), labels = c("18-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80+")),
     Diabetes_binary = factor(Diabetes_binary, levels = c(0, 1), labels = c("No", "Yes"))
   )
-str(data_fixed_m)
+# str(data_fixed_m)
 
